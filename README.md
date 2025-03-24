@@ -6,7 +6,7 @@ CookMates Backend là hệ thống API phục vụ cho ứng dụng quản lý c
 ---
 
 ## 📊 Entity Relationship Diagram (ERD)
-![Main2](https://github.com/user-attachments/assets/f7c81d25-3f7b-4012-a988-95b2e4eeb412)
+![Main2](https://github.com/user-attachments/assets/c9c4de73-a206-494c-b0b7-a60b8fc6c204)
 
 ---
 
