@@ -5,6 +5,11 @@ CookMates Backend là hệ thống API phục vụ cho ứng dụng quản lý c
 
 ---
 
+## 📊 Entity Relationship Diagram (ERD)
+![Main2](https://github.com/user-attachments/assets/f7c81d25-3f7b-4012-a988-95b2e4eeb412)
+
+---
+
 ## 🏗 Công nghệ sử dụng
 - **Java 17**
 - **Spring Boot 3** (Spring MVC, Spring Data JPA, Spring Security, Spring Validation)
