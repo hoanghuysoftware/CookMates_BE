@@ -37,6 +37,9 @@ public class Recipe extends BaseModel{
     private User user;
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

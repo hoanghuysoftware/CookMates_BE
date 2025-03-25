@@ -2,6 +2,7 @@ package com.cookmates.backend.dto;
 
 import com.cookmates.backend.dto.CategoryDTO;
 import com.cookmates.backend.dto.StepDTO;
+import com.cookmates.backend.model.RecipeIngredient;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -33,6 +34,13 @@ public class RecipeDTO {
 
     private String status;
 
-    private List<CategoryDTO> categories;
+    private Long userId;
+
+    private List<Long> categories;
+
+    private List<RecipeIngredientDTO> ingredients;
+
     private List<StepDTO> steps;
+
+
 }
