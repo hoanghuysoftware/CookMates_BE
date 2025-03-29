@@ -1,5 +1,6 @@
 package com.cookmates.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,5 +19,6 @@ public class Category extends BaseModel{
     private String name;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Recipe> recipes;
 }

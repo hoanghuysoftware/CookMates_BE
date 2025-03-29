@@ -16,8 +16,8 @@ public class StepDTO {
     private int stepNumber;
 
     @NotBlank(message = "Description cannot be blank")
-    @Size(max = 1000, message = "Description must be less than 1000 characters")
+//    @Size(max = 1000, message = "Description must be less than 1000 characters")
     private String description;
 
-    private MultipartFile file; // File ảnh dành cho  từng bước
+    private String imageUrl; // File ảnh dành cho  từng bước
 }
