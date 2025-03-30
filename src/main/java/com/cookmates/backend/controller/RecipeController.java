@@ -1,6 +1,7 @@
 package com.cookmates.backend.controller;
 
 import com.cookmates.backend.dto.RecipeDTO;
+import com.cookmates.backend.dto.RecipeResponseDTO;
 import com.cookmates.backend.dto.ResponseMessage;
 import com.cookmates.backend.dto.ResponsePagination;
 import com.cookmates.backend.model.Recipe;
@@ -39,7 +40,7 @@ public class RecipeController {
     public ResponseEntity<ResponsePagination> getAllRecipe(@RequestParam(name = "page", defaultValue = "0") int page,
                                                            @RequestParam(name = "limit", defaultValue = "10")int limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<Recipe> result = recipeService.getAllRecipes(pageable);
+        Page<RecipeResponseDTO> result = recipeService.getAllRecipes(pageable);
         return new ResponseEntity<>(ResponsePagination.builder()
                 .status(true)
                 .message("Recipe get successfully !")
@@ -47,5 +48,16 @@ public class RecipeController {
                 .totalPages((int) result.getTotalPages())
                 .data(result.getContent())
                 .build(), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ResponseMessage> updateStatusRecipe(@PathVariable Long id,
+                                                              @RequestParam(name = "status") String status) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .status(true)
+                .message("Update status successfully !")
+                .timestamp(new Date())
+                .data(recipeService.updateStatusRecipe(id, status))
+                .build(),HttpStatus.OK);
     }
 }

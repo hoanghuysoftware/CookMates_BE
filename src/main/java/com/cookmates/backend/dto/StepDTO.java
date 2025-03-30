@@ -15,6 +15,8 @@ public class StepDTO {
     @Min(value = 1, message = "Step number must be at least 1")
     private int stepNumber;
 
+    private String title;
+
     @NotBlank(message = "Description cannot be blank")
 //    @Size(max = 1000, message = "Description must be less than 1000 characters")
     private String description;

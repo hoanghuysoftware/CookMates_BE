@@ -14,7 +14,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Định nghĩa đường dẫn API áp dụng CORS
                         .allowedOrigins("http://localhost:3000") // Cho phép React truy cập
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức HTTP được phép
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH") // Các phương thức HTTP được phép
                         .allowedHeaders("*") // Chấp nhận mọi Header
                         .allowCredentials(true); // Cho phép gửi cookies, authentication headers
             }

@@ -23,6 +23,7 @@ public class Recipe extends BaseModel{
     private int cookTime;
     private int prepTime;
     private int servings;
+    private String thumbnail;
 
     @Enumerated(EnumType.STRING)
     private RecipeStatus status;

@@ -1,9 +1,6 @@
 package com.cookmates.backend.serviceIMPL;
 
-import com.cookmates.backend.dto.IngredientDTO;
-import com.cookmates.backend.dto.RecipeDTO;
-import com.cookmates.backend.dto.RecipeIngredientDTO;
-import com.cookmates.backend.dto.StepDTO;
+import com.cookmates.backend.dto.*;
 import com.cookmates.backend.enums.RecipeStatus;
 import com.cookmates.backend.enums.UnitName;
 import com.cookmates.backend.exception.DataNotFoundException;
@@ -89,14 +86,17 @@ public class RecipeServiceIMPL implements RecipeService {
             StepDTO stepDTO = recipeDTO.getSteps().get(i);
             Step step = Step.builder()
                     .recipe(recipe)
+                    .title(stepDTO.getTitle())
                     .description(stepDTO.getDescription())
                     .stepNumber(stepDTO.getStepNumber())
                     .build();
             if (stepFiles != null && i < stepFiles.size()) {
                 Image image= imageUtils.uploadImage(stepFiles.get(i), step); // Trả về đường dẫn ảnh
                 step.setImage(image);
+                if (i==stepFiles.size()){
+                    recipe.setThumbnail(image.getImageUrl());
+                }
             }
-
             steps.add(step);
         }
         recipe.setSteps(steps);
@@ -105,8 +105,17 @@ public class RecipeServiceIMPL implements RecipeService {
     }
 
     @Override
-    public Page<Recipe> getAllRecipes(Pageable pageable) {
-        return recipeRepository.findAll(pageable);
+    public Page<RecipeResponseDTO> getAllRecipes(Pageable pageable) {
+        return recipeRepository.findAll(pageable).map(RecipeResponseDTO::fromToRecipeResponseDTO);
+    }
+
+    @Override
+    public RecipeResponseDTO updateStatusRecipe(Long id, String status) {
+        Recipe recipe = recipeRepository.getRecipesById(id).orElseThrow(
+                () -> new DataNotFoundException("Not found recipe with id: " + id)
+        );
+        recipe.setStatus(RecipeStatus.valueOf(status));
+        return RecipeResponseDTO.fromToRecipeResponseDTO(recipeRepository.save(recipe));
     }
 
     @Override
