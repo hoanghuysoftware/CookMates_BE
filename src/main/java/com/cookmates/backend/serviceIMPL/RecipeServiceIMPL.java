@@ -91,9 +91,9 @@ public class RecipeServiceIMPL implements RecipeService {
                     .stepNumber(stepDTO.getStepNumber())
                     .build();
             if (stepFiles != null && i < stepFiles.size()) {
-                Image image= imageUtils.uploadImage(stepFiles.get(i), step); // Trả về đường dẫn ảnh
+                Image image = imageUtils.uploadImage(stepFiles.get(i), step); // Trả về đường dẫn ảnh
                 step.setImage(image);
-                if (i==stepFiles.size()){
+                if (i == stepFiles.size() - 1) {
                     recipe.setThumbnail(image.getImageUrl());
                 }
             }
