@@ -13,6 +13,7 @@ public interface RecipeService {
     Recipe addNewRecipe(RecipeDTO recipeDTO, List<MultipartFile> stepFiles);
     Page<Recipe> getAllRecipesByActive(Pageable pageable, boolean active);
     Page<RecipeResponseDTO> getAllRecipes(Pageable pageable);
+    RecipeResponseDTO getRecipeById(Long id);
     RecipeResponseDTO updateStatusRecipe(Long id, String status);
     Page<Recipe> getRecipesByUserId(Long userId, Pageable pageable);
     Recipe updateRecipe(Long id, RecipeDTO recipeDTO);

@@ -50,6 +50,16 @@ public class RecipeController {
                 .build(), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseMessage> getRecipeById(@PathVariable Long id) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .status(true)
+                .message("Recipe get successfully !")
+                .timestamp(new Date())
+                .data(recipeService.getRecipeById(id))
+                .build(),HttpStatus.OK);
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<ResponseMessage> updateStatusRecipe(@PathVariable Long id,
                                                               @RequestParam(name = "status") String status) {

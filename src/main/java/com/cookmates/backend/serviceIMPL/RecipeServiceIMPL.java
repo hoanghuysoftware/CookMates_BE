@@ -110,6 +110,13 @@ public class RecipeServiceIMPL implements RecipeService {
     }
 
     @Override
+    public RecipeResponseDTO getRecipeById(Long id) {
+        Recipe recipe = recipeRepository.getRecipesById(id).orElseThrow(
+                () -> new DataNotFoundException("Recipe not found with id: " + id));
+        return RecipeResponseDTO.fromToRecipeResponseDTO(recipe);
+    }
+
+    @Override
     public RecipeResponseDTO updateStatusRecipe(Long id, String status) {
         Recipe recipe = recipeRepository.getRecipesById(id).orElseThrow(
                 () -> new DataNotFoundException("Not found recipe with id: " + id)

@@ -23,7 +23,7 @@ public class ReviewServiceIMPL implements ReviewService {
 
     @Override
     public List<Review> getReviewByRecipe(Long recipeId) {
-        return reviewRepository.findAll();
+        return reviewRepository.getReviewsByRecipeId(recipeId);
     }
 
     @Override
