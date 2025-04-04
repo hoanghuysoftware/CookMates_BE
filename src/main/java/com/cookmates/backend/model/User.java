@@ -41,5 +41,8 @@ public class User extends BaseModel {
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Favorite> favorites = new ArrayList<>();
 
 }

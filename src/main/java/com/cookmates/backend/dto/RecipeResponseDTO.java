@@ -27,6 +27,7 @@ public class RecipeResponseDTO {
     private List<CategoryDTO> categories;
     private List<StepDTO> steps; // Mỗi Step có ảnh đi kèm
     private List<IngredientResponse> ingredients;
+    private List<FavoriteDTO> favorites;
 
 
     public static RecipeResponseDTO fromToRecipeResponseDTO(Recipe recipe) {
@@ -64,6 +65,13 @@ public class RecipeResponseDTO {
                             .imageUrl(step.getImage().getImageUrl())
                     .build());
         });
+        List<FavoriteDTO> favoriteDTOS = new ArrayList<>();
+        recipe.getFavorites().forEach(favorite -> {
+            favoriteDTOS.add(FavoriteDTO.builder()
+                            .recipeId(recipe.getId())
+                            .userId(userDTO.getId())
+                    .build());
+        });
         return RecipeResponseDTO.builder()
                 .id(recipe.getId())
                 .title(recipe.getTitle())
@@ -79,6 +87,7 @@ public class RecipeResponseDTO {
                 .categories(categoryDTOS)
                 .ingredients(ingredientResponses)
                 .steps(stepDTOS)
+                .favorites(favoriteDTOS)
                 .build();
     }
 }

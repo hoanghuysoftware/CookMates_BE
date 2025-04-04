@@ -47,4 +47,7 @@ public class Recipe extends BaseModel{
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Step> steps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Favorite> favorites = new ArrayList<>();
 }
