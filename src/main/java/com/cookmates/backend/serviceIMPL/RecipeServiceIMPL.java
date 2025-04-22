@@ -1,9 +1,6 @@
 package com.cookmates.backend.serviceIMPL;
 
-import com.cookmates.backend.dto.IngredientDTO;
-import com.cookmates.backend.dto.RecipeDTO;
-import com.cookmates.backend.dto.RecipeIngredientDTO;
-import com.cookmates.backend.dto.StepDTO;
+import com.cookmates.backend.dto.*;
 import com.cookmates.backend.enums.RecipeStatus;
 import com.cookmates.backend.enums.UnitName;
 import com.cookmates.backend.exception.DataNotFoundException;
@@ -17,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public class RecipeServiceIMPL implements RecipeService {
 
     @Override
     @Transactional
-    public Recipe addNewRecipe(RecipeDTO recipeDTO) {
+    public Recipe addNewRecipe(RecipeDTO recipeDTO, List<MultipartFile> stepFiles) {
         // check user existing
         User user = userRepository.getUserById(recipeDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found with id: " + recipeDTO.getUserId()));
@@ -48,7 +46,7 @@ public class RecipeServiceIMPL implements RecipeService {
             categories.add(category);
         }
 
-        // create init recipe
+        // create init base of recipe
         Recipe recipe = Recipe.builder()
                 .title(recipeDTO.getTitle())
                 .description(recipeDTO.getDescription())
@@ -84,15 +82,20 @@ public class RecipeServiceIMPL implements RecipeService {
 
         // Add step into recipe
         List<Step> steps = new ArrayList<>();
-        for(StepDTO stepDTO : recipeDTO.getSteps()){
+        for (int i = 0; i < recipeDTO.getSteps().size(); i++) {
+            StepDTO stepDTO = recipeDTO.getSteps().get(i);
             Step step = Step.builder()
                     .recipe(recipe)
+                    .title(stepDTO.getTitle())
                     .description(stepDTO.getDescription())
                     .stepNumber(stepDTO.getStepNumber())
                     .build();
-            if (stepDTO.getFile() != null) {
-                Image image = imageUtils.uploadImage(stepDTO.getFile(), step);
+            if (stepFiles != null && i < stepFiles.size()) {
+                Image image = imageUtils.uploadImage(stepFiles.get(i), step); // Trả về đường dẫn ảnh
                 step.setImage(image);
+                if (i == stepFiles.size() - 1) {
+                    recipe.setThumbnail(image.getImageUrl());
+                }
             }
             steps.add(step);
         }
@@ -102,8 +105,24 @@ public class RecipeServiceIMPL implements RecipeService {
     }
 
     @Override
-    public Page<Recipe> getAllRecipes(Pageable pageable) {
-        return recipeRepository.findAll(pageable);
+    public Page<RecipeResponseDTO> getAllRecipes(Pageable pageable) {
+        return recipeRepository.findAll(pageable).map(RecipeResponseDTO::fromToRecipeResponseDTO);
+    }
+
+    @Override
+    public RecipeResponseDTO getRecipeById(Long id) {
+        Recipe recipe = recipeRepository.getRecipesById(id).orElseThrow(
+                () -> new DataNotFoundException("Recipe not found with id: " + id));
+        return RecipeResponseDTO.fromToRecipeResponseDTO(recipe);
+    }
+
+    @Override
+    public RecipeResponseDTO updateStatusRecipe(Long id, String status) {
+        Recipe recipe = recipeRepository.getRecipesById(id).orElseThrow(
+                () -> new DataNotFoundException("Not found recipe with id: " + id)
+        );
+        recipe.setStatus(RecipeStatus.valueOf(status));
+        return RecipeResponseDTO.fromToRecipeResponseDTO(recipeRepository.save(recipe));
     }
 
     @Override
@@ -121,39 +140,40 @@ public class RecipeServiceIMPL implements RecipeService {
     @Override
     @Transactional
     public Recipe updateRecipe(Long id, RecipeDTO recipeDTO) {
-        Recipe recipe = recipeRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Recipe not found with id: " + id));
-
-        recipe.setTitle(recipeDTO.getTitle());
-        recipe.setDescription(recipeDTO.getDescription());
-        recipe.setCookTime(recipeDTO.getCookTime());
-        recipe.setPrepTime(recipeDTO.getPrepTime());
-        recipe.setServings(recipeDTO.getServings());
-        recipe.setStatus(RecipeStatus.valueOf(recipeDTO.getStatus()));
-
-        List<Category> categories = recipeDTO.getCategories().stream()
-                .map(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new DataNotFoundException("Category not found with id: " + categoryId)))
-                .toList();
-        recipe.setCategories(categories);
-
-        stepRepository.deleteAll(recipe.getSteps());
-        List<Step> steps = recipeDTO.getSteps().stream()
-                .map(stepDTO -> {
-                    Step step = Step.builder()
-                            .recipe(recipe)
-                            .description(stepDTO.getDescription())
-                            .stepNumber(stepDTO.getStepNumber())
-                            .build();
-                    if (stepDTO.getFile() != null) {
-                        Image image = imageUtils.uploadImage(stepDTO.getFile(), step);
-                        step.setImage(image);
-                    }
-                    return step;
-                }).toList();
-        recipe.setSteps(steps);
-
-        return recipeRepository.save(recipe);
+        return null;
+//        Recipe recipe = recipeRepository.findById(id)
+//                .orElseThrow(() -> new DataNotFoundException("Recipe not found with id: " + id));
+//
+//        recipe.setTitle(recipeDTO.getTitle());
+//        recipe.setDescription(recipeDTO.getDescription());
+//        recipe.setCookTime(recipeDTO.getCookTime());
+//        recipe.setPrepTime(recipeDTO.getPrepTime());
+//        recipe.setServings(recipeDTO.getServings());
+//        recipe.setStatus(RecipeStatus.valueOf(recipeDTO.getStatus()));
+//
+//        List<Category> categories = recipeDTO.getCategories().stream()
+//                .map(categoryId -> categoryRepository.findById(categoryId)
+//                        .orElseThrow(() -> new DataNotFoundException("Category not found with id: " + categoryId)))
+//                .toList();
+//        recipe.setCategories(categories);
+//
+//        stepRepository.deleteAll(recipe.getSteps());
+//        List<Step> steps = recipeDTO.getSteps().stream()
+//                .map(stepDTO -> {
+//                    Step step = Step.builder()
+//                            .recipe(recipe)
+//                            .description(stepDTO.getDescription())
+//                            .stepNumber(stepDTO.getStepNumber())
+//                            .build();
+//                    if (stepDTO.getFile() != null) {
+//                        Image image = imageUtils.uploadImage(stepDTO.getFile(), step);
+//                        step.setImage(image);
+//                    }
+//                    return step;
+//                }).toList();
+//        recipe.setSteps(steps);
+//
+//        return recipeRepository.save(recipe);
     }
 
     @Override

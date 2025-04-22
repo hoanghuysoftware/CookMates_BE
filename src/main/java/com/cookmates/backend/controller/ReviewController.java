@@ -36,7 +36,7 @@ public class ReviewController {
                 .build(), HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseMessage> updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .status(true)

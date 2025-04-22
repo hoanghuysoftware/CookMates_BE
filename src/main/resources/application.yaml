@@ -3,9 +3,12 @@ spring:
     name: CookMates
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/recipe_sharing
+    url: jdbc:mysql://localhost:3306/recipe_sharing_dev
     username: hoanghuy
     password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
   jpa:
     show-sql: true
     properties:
@@ -13,6 +16,7 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 cloudinary:
   cloud-name: dp0tcvlag
   api-key: 929913749946788

@@ -1,5 +1,6 @@
 package com.cookmates.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,8 @@ public class Image {
     private String imageUrl;
     private String public_id; // id cua anh tai cloudinary
 
-    @OneToOne
+    @OneToOne(mappedBy = "image")
+    @JsonIgnore
     private Step step;
 
 }

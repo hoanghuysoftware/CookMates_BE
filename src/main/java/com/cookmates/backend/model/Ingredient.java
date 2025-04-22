@@ -1,5 +1,6 @@
 package com.cookmates.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class Ingredient {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 }
