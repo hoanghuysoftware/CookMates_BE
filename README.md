@@ -123,9 +123,4 @@ Mọi đóng góp đều được hoan nghênh! Nếu bạn muốn góp ý hoặ
 ---
 
 ## 🚀 Lịch sử phát triển
-- **Ngày 24/03/2025**
-   + Thiết kế mô hình dữ liệu và tạo Entity
-   + Cấu hình Hibernate và MySQL
-   + Thiết lập DTO và thêm validation
-   + Thêm trường image cho Step khi trả về response
 
