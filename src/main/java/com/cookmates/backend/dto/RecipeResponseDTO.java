@@ -43,6 +43,7 @@ public class RecipeResponseDTO {
         List<CategoryDTO> categoryDTOS = new ArrayList<>();
         recipe.getCategories().forEach(category -> {
             categoryDTOS.add(CategoryDTO.builder()
+                            .id(category.getId())
                             .name(category.getName())
                     .build());
         });
@@ -68,8 +69,9 @@ public class RecipeResponseDTO {
         List<FavoriteDTO> favoriteDTOS = new ArrayList<>();
         recipe.getFavorites().forEach(favorite -> {
             favoriteDTOS.add(FavoriteDTO.builder()
+                            .id(favorite.getId())
                             .recipeId(recipe.getId())
-                            .userId(userDTO.getId())
+                            .userId(favorite.getUser().getId())
                     .build());
         });
         return RecipeResponseDTO.builder()

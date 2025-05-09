@@ -6,8 +6,10 @@ import com.cookmates.backend.model.Category;
 import com.cookmates.backend.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -17,15 +19,16 @@ import java.util.Date;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @PostMapping
-    public ResponseEntity<ResponseMessage> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        Category category = categoryService.save(categoryDTO);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseMessage> createCategory(@RequestPart("category") CategoryDTO categoryDTO,
+                                                          @RequestPart(value = "image", required = false) MultipartFile image) {
+        Category category = categoryService.save(categoryDTO, image);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .status(true)
                 .message("Category created successfully !")
                 .timestamp(new Date())
                 .data(category)
-                .build(),HttpStatus.CREATED);
+                .build(), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -35,7 +38,7 @@ public class CategoryController {
                 .message("Get all categories successfully !")
                 .timestamp(new Date())
                 .data(categoryService.findAll())
-                .build(),HttpStatus.OK);
+                .build(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,7 +48,7 @@ public class CategoryController {
                 .message("Get category by ID successfully !")
                 .timestamp(new Date())
                 .data(categoryService.findById(id))
-                .build(),HttpStatus.OK);
+                .build(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -56,7 +59,7 @@ public class CategoryController {
                 .message("Update category successfully !")
                 .timestamp(new Date())
                 .data(categoryUpdate)
-                .build(),HttpStatus.OK);
+                .build(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -66,6 +69,6 @@ public class CategoryController {
                 .status(true)
                 .message("Delete category successfully !")
                 .timestamp(new Date())
-                .build(),HttpStatus.OK);
+                .build(), HttpStatus.OK);
     }
 }

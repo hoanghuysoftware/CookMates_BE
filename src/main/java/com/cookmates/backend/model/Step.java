@@ -18,6 +18,9 @@ public class Step {
     private Long id;
     private int stepNumber;
     private String title;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

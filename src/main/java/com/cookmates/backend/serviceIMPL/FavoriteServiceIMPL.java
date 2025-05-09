@@ -1,5 +1,6 @@
 package com.cookmates.backend.serviceIMPL;
 
+import com.cookmates.backend.dto.FavoriteDTO;
 import com.cookmates.backend.exception.DataNotFoundException;
 import com.cookmates.backend.model.Favorite;
 import com.cookmates.backend.model.Recipe;
@@ -39,9 +40,10 @@ public class FavoriteServiceIMPL implements FavoriteService {
     }
 
     @Override
-    public Page<Favorite> getFavoriteByUserId(Long userId, Pageable pageable) {
-        List<Favorite> favorites = favoriteRepository.getFavoritesByUserId(userId);
-        return new PageImpl<>(favorites);
+    public Page<FavoriteDTO> getFavoriteByUserId(Long userId, Pageable pageable) {
+
+        Page<Favorite> favoriteDTOS = favoriteRepository.findFavoritesByUserId(userId, pageable);
+        return favoriteDTOS.map(FavoriteDTO::toFavoriteDTO);
     }
 
     @Override

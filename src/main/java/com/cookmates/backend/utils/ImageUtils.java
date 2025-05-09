@@ -39,4 +39,14 @@ public class ImageUtils {
             throw new RuntimeException("Upload image failed", e);
         }
     }
+    public String uploadImageForCategory(MultipartFile file){
+        try {
+            // Upload lên Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("folder", "category"));
+            return (String) uploadResult.get("secure_url");
+        }catch (IOException e){
+            throw new RuntimeException("Upload image failed", e);
+        }
+    }
 }

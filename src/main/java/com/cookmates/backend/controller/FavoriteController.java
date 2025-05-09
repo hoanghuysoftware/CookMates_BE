@@ -1,5 +1,6 @@
 package com.cookmates.backend.controller;
 
+import com.cookmates.backend.dto.FavoriteDTO;
 import com.cookmates.backend.dto.ResponseMessage;
 import com.cookmates.backend.dto.ResponsePagination;
 import com.cookmates.backend.model.Favorite;
@@ -25,7 +26,7 @@ public class FavoriteController {
                                                                         @RequestParam(name = "page", defaultValue = "0") int page,
                                                                         @RequestParam(name = "limit", defaultValue = "10") int limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<Favorite> favorites = favoriteService.getFavoriteByUserId(idUser, pageable);
+        Page<FavoriteDTO> favorites = favoriteService.getFavoriteByUserId(idUser, pageable);
         return new ResponseEntity<>(ResponsePagination.builder()
                 .status(true)
                 .message("Get favorite recipe by id: "+idUser)

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -182,5 +183,14 @@ public class RecipeServiceIMPL implements RecipeService {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Recipe not found with id: " + id));
         recipeRepository.delete(recipe);
+    }
+
+    @Override
+    public Page<RecipeResponseDTO> searchRecipeByTitle(String title, Pageable pageable) {
+        Page<Recipe> recipePage = recipeRepository.findByTitleContaining(title, pageable);
+        List<RecipeResponseDTO> responseDTOS = recipePage.stream()
+                .map(RecipeResponseDTO::fromToRecipeResponseDTO)
+                .toList();
+        return new PageImpl<>(responseDTOS, pageable, recipePage.getTotalElements());
     }
 }

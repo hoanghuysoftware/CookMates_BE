@@ -18,4 +18,6 @@ public interface RecipeService {
     Page<Recipe> getRecipesByUserId(Long userId, Pageable pageable);
     Recipe updateRecipe(Long id, RecipeDTO recipeDTO);
     void deleteRecipe(Long id);
+    Page<RecipeResponseDTO> searchRecipeByTitle(String title, Pageable pageable);
+
 }

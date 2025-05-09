@@ -17,6 +17,7 @@ public class Category extends BaseModel{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String imageUrl;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     @JsonIgnore

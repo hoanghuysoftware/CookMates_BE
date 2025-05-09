@@ -70,4 +70,19 @@ public class RecipeController {
                 .data(recipeService.updateStatusRecipe(id, status))
                 .build(),HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponsePagination> doSearch(@RequestParam("value") String value,
+                                                       @RequestParam(name = "page", defaultValue = "0") int page,
+                                                       @RequestParam(name = "limit", defaultValue = "10")int limit){
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<RecipeResponseDTO> result = recipeService.searchRecipeByTitle(value, pageable);
+        return new ResponseEntity<>(ResponsePagination.builder()
+                .status(true)
+                .message("Recipe search successfully !")
+                .totalPages((int) result.getTotalPages())
+                .totalElements((int) result.getTotalElements())
+                .data(result.getContent())
+                .build(), HttpStatus.OK);
+    }
 }

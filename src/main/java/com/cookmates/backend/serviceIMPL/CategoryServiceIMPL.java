@@ -6,8 +6,10 @@ import com.cookmates.backend.exception.ExistingDataException;
 import com.cookmates.backend.model.Category;
 import com.cookmates.backend.repository.CategoryRepository;
 import com.cookmates.backend.service.CategoryService;
+import com.cookmates.backend.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceIMPL implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ImageUtils imageUtils;
 
     @Override
     public List<Category> findByName(String name) {
@@ -34,9 +37,11 @@ public class CategoryServiceIMPL implements CategoryService {
     }
 
     @Override
-    public Category save(CategoryDTO categoryDTO) {
+    public Category save(CategoryDTO categoryDTO, MultipartFile image) {
+        String imageUrl = imageUtils.uploadImageForCategory(image);
         Category category = Category.builder()
                 .name(categoryDTO.getName())
+                .imageUrl(imageUrl)
                 .build();
         return categoryRepository.save(category);
     }

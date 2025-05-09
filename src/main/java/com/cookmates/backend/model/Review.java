@@ -14,7 +14,11 @@ public class Review extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
+
     private int rating;
 
     @ManyToOne(fetch = FetchType.EAGER)
