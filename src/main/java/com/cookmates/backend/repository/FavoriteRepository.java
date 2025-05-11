@@ -12,4 +12,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     List<Favorite> getFavoritesByUserId(Long userId);
     Optional<Favorite> getFavoriteById(Long id);
     Page<Favorite> findFavoritesByUserId(Long userId, Pageable pageable);
+    void deleteFavoriteByUserIdAndRecipeId(Long userId, Long recipeId);
 }

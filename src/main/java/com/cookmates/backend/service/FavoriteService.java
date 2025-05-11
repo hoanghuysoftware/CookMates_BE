@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface FavoriteService {
     Favorite addFavorite(Long userId, Long recipeId);
     Page<FavoriteDTO> getFavoriteByUserId(Long userId, Pageable pageable);
-    void deleteFavoriteByUserId(Long favoriteId);
+    void deleteFavoriteByUserId(Long userId, Long recipeId);
 }

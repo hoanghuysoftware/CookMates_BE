@@ -47,12 +47,13 @@ public class FavoriteController {
                 .build(), HttpStatus.OK);
     }
 
-    @DeleteMapping()
-    public ResponseEntity<ResponseMessage> deleteFavoriteRecipe(@RequestParam(name = "idFavorite")Long idFavorite){
-        favoriteService.deleteFavoriteByUserId(idFavorite);
+    @DeleteMapping("/user/{idUser}/recipe/{idRecipe}")
+    public ResponseEntity<ResponseMessage> deleteFavoriteRecipe(@PathVariable Long idUser,
+                                                                @PathVariable Long idRecipe){
+        favoriteService.deleteFavoriteByUserId(idUser, idRecipe);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .status(true)
-                .message("Delete favorite recipe by id: "+idFavorite)
+                .message("Delete favorite recipe by id: "+idRecipe)
                 .timestamp(new Date())
                 .build(), HttpStatus.OK);
     }

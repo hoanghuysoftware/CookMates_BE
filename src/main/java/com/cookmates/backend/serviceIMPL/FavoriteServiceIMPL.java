@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class FavoriteServiceIMPL implements FavoriteService {
         );
         Recipe recipe = recipeRepository.getRecipesById(recipeId).orElseThrow(
                 () -> new DataNotFoundException("Not found user with id " + userId)
-        );;
+        );
         Favorite favorite = Favorite.builder()
                 .user(user)
                 .recipe(recipe)
@@ -46,11 +47,9 @@ public class FavoriteServiceIMPL implements FavoriteService {
         return favoriteDTOS.map(FavoriteDTO::toFavoriteDTO);
     }
 
+    @Transactional
     @Override
-    public void deleteFavoriteByUserId(Long favoriteId) {
-        Favorite favorite = favoriteRepository.getFavoriteById(favoriteId).orElseThrow(
-                () -> new DataNotFoundException("Not found favorite with id " + favoriteId)
-        );
-        favoriteRepository.delete(favorite);
+    public void deleteFavoriteByUserId(Long userId, Long recipeId) {
+        favoriteRepository.deleteFavoriteByUserIdAndRecipeId(userId, recipeId);
     }
 }

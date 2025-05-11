@@ -4,6 +4,7 @@ import com.cookmates.backend.dto.RecipeDTO;
 import com.cookmates.backend.dto.RecipeResponseDTO;
 import com.cookmates.backend.dto.ResponseMessage;
 import com.cookmates.backend.dto.ResponsePagination;
+import com.cookmates.backend.enums.RecipeStatus;
 import com.cookmates.backend.model.Recipe;
 import com.cookmates.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,20 @@ public class RecipeController {
                 .totalElements((int) result.getTotalElements())
                 .totalPages((int) result.getTotalPages())
                 .data(result.getContent())
-                .build(), HttpStatus.CREATED);
+                .build(), HttpStatus.OK);
+    }
+    @GetMapping("/active")
+    public ResponseEntity<ResponsePagination> getAllRecipeForUser(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                           @RequestParam(name = "limit", defaultValue = "5")int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<RecipeResponseDTO> result = recipeService.getAllRecipesByActive(pageable, RecipeStatus.APPROVED);
+        return new ResponseEntity<>(ResponsePagination.builder()
+                .status(true)
+                .message("Recipe get successfully !")
+                .totalElements((int) result.getTotalElements())
+                .totalPages((int) result.getTotalPages())
+                .data(result.getContent())
+                .build(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -105,6 +105,7 @@ public class RecipeServiceIMPL implements RecipeService {
         return recipeRepository.save(recipe);
     }
 
+    // method get recipe for admin
     @Override
     public Page<RecipeResponseDTO> getAllRecipes(Pageable pageable) {
         return recipeRepository.findAll(pageable).map(RecipeResponseDTO::fromToRecipeResponseDTO);
@@ -126,9 +127,15 @@ public class RecipeServiceIMPL implements RecipeService {
         return RecipeResponseDTO.fromToRecipeResponseDTO(recipeRepository.save(recipe));
     }
 
+    // method get recipe for user
     @Override
-    public Page<Recipe> getAllRecipesByActive(Pageable pageable, boolean active) {
-        return null;
+    public Page<RecipeResponseDTO> getAllRecipesByActive(Pageable pageable, RecipeStatus active) {
+        Page<Recipe> recipes = recipeRepository.findRecipesByStatus(active, pageable);
+        List<RecipeResponseDTO> responseDTOS = recipes.stream()
+                .map(RecipeResponseDTO::fromToRecipeResponseDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(responseDTOS, pageable, recipes.getTotalElements());
+
 //        return recipeRepository.findByStatus(active ? RecipeStatus.APPROVED : RecipeStatus.PENDING, pageable);
     }
 
